@@ -14,7 +14,7 @@ const credentials = {
 };
 
 app.use(cors())
-app.use('/api/', router);
+app.use(router);
 
 // Listen
 https.createServer(credentials, app).listen(3000, () => {
