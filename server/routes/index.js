@@ -5,7 +5,7 @@ const router = express.Router();
 // Routes
 router.get('/api/v1/stats', async (req, res, next) => {
     try {
-        let results = await db.guilds();
+        let results = await db.stats();
         res.json(results);
     } catch(e) {
         res.sendStatus(500);
