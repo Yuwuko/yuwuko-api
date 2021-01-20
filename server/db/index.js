@@ -11,33 +11,11 @@ let connection = mysql.createPool({
 
 let dbyuuko = {};
 
-dbyuuko.events = () => {
+dbyuuko.stats = () => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT `messageEvents` FROM `metrics_discord` ORDER BY `dateInserted` DESC LIMIT 1;', (err, results) => {
+        connection.query('SELECT metrics_discord.guildCount, metrics_discord.messageEvents, metrics_system.uptime FROM metrics_discord INNER JOIN metrics_system ON metrics_discord.shardId = metrics_system.shardId ORDER BY metrics_system.dateInserted DESC LIMIT 1', (err, results) => {
             if(!err) {
-                return resolve(results);
-            }
-            return reject(err);
-        })
-    })
-}
-
-dbyuuko.guilds = () => {
-    return new Promise((resolve, reject) => {
-        connection.query('SELECT `guildCount` FROM `metrics_discord` ORDER BY `dateInserted` DESC LIMIT 1', (err, results) => {
-            if(!err) {
-                return resolve(results);
-            }
-            return reject(err);
-        })
-    })
-}
-
-dbyuuko.uptime = () => {
-    return new Promise((resolve, reject) => {
-        connection.query('SELECT `uptime` FROM `metrics_system` ORDER BY `dateInserted` DESC LIMIT 1', (err, results) => {
-            if(!err) {
-                return resolve(results);
+                return resolve(results[0]);
             }
             return reject(err);
         })
